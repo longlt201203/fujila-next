@@ -17,6 +17,13 @@ const config: Config = {
           softGrey: "#F5F5F5",
           charcoalGrey: "#333333",
           white: "#FFFFFF"
+        },
+        themeColors: {
+          royalBlue: "#4169E1",
+          silverBlue: "#B0C4DE",
+          ivoryWhite: "#FFFFF0",
+          midnightBlue: "#191970",
+          crystalBlue: "#5F9EA0"
         }
       },
       fontFamily: {
