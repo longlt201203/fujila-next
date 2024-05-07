@@ -15,6 +15,22 @@ function TextInput(props: TextInputProps) {
     );
 }
 
+export interface SelectInputProps {
+    label?: string;
+    options: { value: string, label: string }[];
+}
+
+function SelectInput(props: SelectInputProps) {
+    return (
+        <div className="flex flex-col w-full">
+            {props.label && <label className="font-label text-themeColors-silverBlue">{props.label}</label>}
+            <select className="p-2 font-body outline-none">
+                {props.options.map(item => (<option key={item.value} value={item.value}>{item.label}</option>))}
+            </select>
+        </div>
+    );
+}
+
 function VerticalGroup(props: PropsWithChildren) {
     return (
         <div className="flex flex-col gap-y-2">
@@ -25,7 +41,8 @@ function VerticalGroup(props: PropsWithChildren) {
 
 const Form = {
     TextInput,
-    VerticalGroup
+    VerticalGroup,
+    SelectInput
 };
 
 export default Form;

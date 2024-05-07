@@ -5,8 +5,9 @@ import { Table, TableBody, TableHead, TableHeadCell, TableRow } from "@/componen
 export default function ChatHistoriesPage() {
     return (
         <div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
                 <Form.TextInput label="Username" placeholder="Enter username..." />
+                <Form.SelectInput label="Chat" options={[{ label: "Hi!", value: "" }]} />
                 <Button>Show chat histories</Button>
             </div>
             <div className="">
@@ -14,10 +15,9 @@ export default function ChatHistoriesPage() {
                     <TableHead>
                         <TableRow>
                             <TableHeadCell>#</TableHeadCell>
-                            <TableHeadCell></TableHeadCell>
-                            <TableHeadCell>#</TableHeadCell>
-                            <TableHeadCell>#</TableHeadCell>
-                            <TableHeadCell>#</TableHeadCell>
+                            <TableHeadCell>User Text</TableHeadCell>
+                            <TableHeadCell>Bot Response</TableHeadCell>
+                            <TableHeadCell>Create At</TableHeadCell>
                         </TableRow>
                     </TableHead>
                     <TableBody></TableBody>

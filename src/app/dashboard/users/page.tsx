@@ -1,16 +1,8 @@
 import { getAllUsers } from "@/actions/user.actions";
 import Button from "@/components/Button";
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "@/components/Table";
-import { User } from "@prisma/client";
-import { useEffect, useState } from "react";
 
 export default async function UsersPage() {
-    // const [users, setUsers] = useState<User[]>([]);
-
-    // useEffect(() => {
-    //     getAllUsers().then((data) => setUsers(data));
-    // }, []);
-
     const users = await getAllUsers();
 
     return (
