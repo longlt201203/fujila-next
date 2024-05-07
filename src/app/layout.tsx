@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import RootProvider from "@/providers/RootProvider";
 
 export const metadata: Metadata = {
   title: "Fujila",
@@ -13,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><RootProvider>{children}</RootProvider></body>
     </html>
   );
 }
