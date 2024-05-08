@@ -4,13 +4,15 @@ export interface TextInputProps {
     label?: string;
     placeholder?: string;
     isPassword?: boolean;
+    value?: string;
+    onChange?: (value: string) => void;
 }
 
 function TextInput(props: TextInputProps) {
     return (
         <div className="flex flex-col w-full">
             {props.label && <label className="font-label text-themeColors-silverBlue">{props.label}</label>}
-            <input type={props.isPassword ? "password" : "text"} className="p-2 font-body outline-none border-b focus:border-themeColors-royalBlue" placeholder={props.placeholder} />
+            <input type={props.isPassword ? "password" : "text"} className="p-2 font-body outline-none border-b focus:border-themeColors-royalBlue" placeholder={props.placeholder} value={props.value} onChange={(e) => props.onChange && props.onChange(e.target.value)} />
         </div>
     );
 }

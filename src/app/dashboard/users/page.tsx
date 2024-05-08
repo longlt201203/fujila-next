@@ -1,5 +1,5 @@
 import { getAllUsers } from "@/actions/user.actions";
-import Button from "@/components/Button";
+import Button, { LinkButton } from "@/components/Button";
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "@/components/Table";
 
 export default async function UsersPage() {
@@ -25,7 +25,7 @@ export default async function UsersPage() {
                             <TableCell>{user.email}</TableCell>
                             <TableCell>{user.createdAt.toLocaleString()}</TableCell>
                             <TableCell>
-                                <Button size="small">Chat Histories</Button>
+                                <LinkButton size="small" href={`/dashboard/chat-histories?username=${user.username}`}>Chat Histories</LinkButton>
                             </TableCell>
                         </TableRow>
                     ))}

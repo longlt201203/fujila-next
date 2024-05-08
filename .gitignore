@@ -38,3 +38,6 @@ next-env.d.ts
 migrations
 dev.db
 dev.db-journal
+
+# redis
+.redis
