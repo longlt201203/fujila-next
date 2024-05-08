@@ -18,7 +18,7 @@ export default class MailService {
             port: 465,
             auth: {
                 user: "fujila.drogon@gmail.com",
-                pass: "wxur dqer kvhr sjes"
+                pass: process.env.MAIL_PASS
             }
         });
     }
