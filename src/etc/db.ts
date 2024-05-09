@@ -4,8 +4,13 @@ export default class Db {
     private static prisma: PrismaClient;
     static async getPrismaClient() {
         if (!this.prisma) {
-            this.prisma = new PrismaClient();
-            await this.prisma.$connect();
+            try {
+                const prisma = new PrismaClient();
+                await prisma.$connect();
+                this.prisma = prisma;
+            } catch (err) {
+                console.log(err);
+            }
         }
         return this.prisma;
     }

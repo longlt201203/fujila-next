@@ -1,5 +1,8 @@
+import { findUserByUsernameOrEmail } from "@/actions/user.actions";
+import { ErrorResponseDto } from "@/etc/dto";
+import FujilaRequest from "@/etc/fujila-request";
 import jwt from "jsonwebtoken";
-import { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export function randomLoginCode() {
     let otp = '';
@@ -18,12 +21,31 @@ export function signJwtToken(username: string) {
 }
 
 export function verifyJwtToken(token: string) {
-    const verifyResult = jwt.verify(token, process.env.JWT_SECRET || "hjhj", {
-        issuer: process.env.JWT_ISSUER,
-    });
-    return typeof verifyResult == "string" ? null : verifyResult.sub || null;
+    try {
+        const verifyResult = jwt.verify(token, process.env.JWT_SECRET || "hjhj", {
+            issuer: process.env.JWT_ISSUER,
+        });
+        // console.log(verifyResult)
+        return typeof verifyResult == "string" ? null : verifyResult.sub || null;
+    } catch (err) {
+        // console.log(err);
+        return null;
+    }
 }
 
-export async function verifyRequest(req: NextRequest) {
-    
+export async function preprocessRequest(req: FujilaRequest) {
+    const authorization = req.headers.get("Authorization");
+    if (authorization) {
+        if (authorization.startsWith("Bearer ")) {
+            const token = authorization.slice("Bearer ".length, authorization.length);
+            if (token) {
+                const username = verifyJwtToken(token);
+                if (username) {
+                    const user = await findUserByUsernameOrEmail(username);
+                    req.user = user;
+                }
+            }
+        }
+    }
+    return req;
 }

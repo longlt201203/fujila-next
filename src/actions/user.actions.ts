@@ -2,6 +2,7 @@
 
 import Db from "@/etc/db"
 import { CreateUserDto } from "@/etc/dto";
+import { Role } from "@/etc/enums";
 
 export async function getAllUsers() {
     const prisma = await Db.getPrismaClient();
@@ -11,6 +12,12 @@ export async function getAllUsers() {
 export async function createUser(dto: CreateUserDto) {
     const prisma = await Db.getPrismaClient();
     const user = await prisma.user.create({ data: { username: dto.username, email: dto.email } });
+    return user;
+}
+
+export async function createAdminUser(email: string) {
+    const prisma = await Db.getPrismaClient();
+    const user = await prisma.user.create({ data: { username: email, email: email, role: Role.ADMIN } });
     return user;
 }
 

@@ -2,6 +2,7 @@ import { findUserByUsernameOrEmail } from "@/actions/user.actions";
 import { randomLoginCode } from "@/app/api/auth/utils";
 import Cache from "@/etc/cache";
 import { ErrorResponseDto, MessageResponseDto } from "@/etc/dto";
+import ErrorCode from "@/etc/error-code";
 import MailService from "@/etc/mail.service";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -14,12 +15,12 @@ export async function POST(req: NextRequest) {
 
     const prevLoginCode = await redis.get(`${username}:loginCode`);
     if (prevLoginCode) {
-        return NextResponse.json(ErrorResponseDto.create({ code: "login_code_existed", message: "Login code is not expired!", detail: { username: username } }), { status: 400 });
+        return NextResponse.json(ErrorResponseDto.create({ code: ErrorCode.login_code_existed.code, message: ErrorCode.login_code_existed.message, detail: { username: username } }), { status: 400 });
     }
 
     const user = await findUserByUsernameOrEmail(username);
     if (!user) {
-        return NextResponse.json(ErrorResponseDto.create({ code: "user_not_found", message: "User not found!", detail: { username: username } }), { status: 400 });
+        return NextResponse.json(ErrorResponseDto.create({ code: ErrorCode.user_not_found.code, message: ErrorCode.user_not_found.message, detail: { username: username } }), { status: 400 });
     }
 
     const loginCode = randomLoginCode();

@@ -1,6 +1,7 @@
 import { signJwtToken } from "@/app/api/auth/utils";
 import Cache from "@/etc/cache";
 import { ErrorResponseDto } from "@/etc/dto";
+import ErrorCode from "@/etc/error-code";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = 'force-dynamic';
@@ -11,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     const loginCode = await redis.get(`${username}:loginCode`);
     if (!loginCode || loginCode != code) {
-        return NextResponse.json(ErrorResponseDto.create({ code: "invalid_login_code", message: "Invalid Login Code", detail: { code: code } }), { status: 400 });
+        return NextResponse.json(ErrorResponseDto.create({ code: ErrorCode.invalid_login_code.code, message: ErrorCode.invalid_login_code.message, detail: { code: code } }), { status: 400 });
     }
 
     redis.del(`${username}:loginCode`);

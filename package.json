@@ -13,9 +13,11 @@
     "@prisma/client": "^5.13.0",
     "@react-oauth/google": "^0.12.1",
     "ejs": "^3.1.10",
+    "google-auth-library": "^9.9.0",
     "jsonwebtoken": "^9.0.2",
     "next": "14.2.3",
     "nodemailer": "^6.9.13",
+    "path-to-regexp": "^6.2.2",
     "react": "^18",
     "react-dom": "^18",
     "redis": "^4.6.13"

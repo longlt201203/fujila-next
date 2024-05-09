@@ -14,10 +14,10 @@ export default class MailService {
     private readonly transporter: Transporter<SMTPTransport.SentMessageInfo>
     private constructor() {
         this.transporter = nodemailer.createTransport({
-            host: "",
-            port: 0,
+            host: process.env.SMTP_HOST,
+            port: parseInt(process.env.SMTP_PORT || "465"),
             auth: {
-                user: "",
+                user: process.env.MAIL,
                 pass: process.env.MAIL_PASS
             }
         });

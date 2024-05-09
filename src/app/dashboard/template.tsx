@@ -1,9 +1,11 @@
 "use client"
 
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import Typography from "@/components/Typography";
 import { LinkButton } from "@/components/Button";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
+import { Role } from "@/etc/enums";
 
 function Header() {
     return (
@@ -49,6 +51,15 @@ function Sidebar() {
 }
 
 export default function DashboardTemplate(props: PropsWithChildren) {
+    // const { getProfile, profile } = useAuth();
+    // const router = useRouter();
+
+    // useEffect(() => {
+    //     if (!(profile && profile.role == Role.ADMIN)) {
+    //         router.push("/forbiden");
+    //     }
+    // }, []);
+
     return (
         <div className="flex flex-row h-screen">
             <Sidebar />

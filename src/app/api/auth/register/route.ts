@@ -1,7 +1,9 @@
+import { createChat } from "@/actions/chat.actions";
 import { createUser, findUserByUsernameOrEmail } from "@/actions/user.actions";
 import { randomLoginCode } from "@/app/api/auth/utils";
 import Cache from "@/etc/cache";
 import { CreateUserDto, ErrorResponseDto } from "@/etc/dto";
+import ErrorCode from "@/etc/error-code";
 import MailService from "@/etc/mail.service";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -17,18 +19,19 @@ export async function POST(req: NextRequest) {
 
     const errors = [];
     if (result[0]) {
-        errors.push("user_username_existed");
+        errors.push(ErrorCode.user_username_existed.code);
     }
     if (result[1]) {
-        errors.push("user_email_existed");
+        errors.push(ErrorCode.user_email_existed.code);
     }
-    if (errors.length > 0) return NextResponse.json(ErrorResponseDto.create({ code: "validation_err", message: "Register Error!", detail: { errors: errors } }), { status: 400 });
+    if (errors.length > 0) return NextResponse.json(ErrorResponseDto.create({ code: ErrorCode.validation_err.code, message: ErrorCode.validation_err.message, detail: { errors: errors } }), { status: 400 });
 
     try {
-        await createUser(body);
+        const user = await createUser(body);
+        createChat(user.id);
     } catch (err) {
         console.log(err);
-        return NextResponse.json(ErrorResponseDto.create({ code: "server_err", message: "Error while creating user!", detail: {} }), { status: 500 })
+        return NextResponse.json(ErrorResponseDto.createInternalServerError(), { status: 500 })
     }
 
     const loginCode = randomLoginCode();
