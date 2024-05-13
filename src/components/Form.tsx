@@ -20,13 +20,15 @@ function TextInput(props: TextInputProps) {
 export interface SelectInputProps {
     label?: string;
     options: { value: string, label: string }[];
+    value?: string;
+    onChange?: (value: string) => void;
 }
 
 function SelectInput(props: SelectInputProps) {
     return (
         <div className="flex flex-col w-full">
             {props.label && <label className="font-label text-themeColors-silverBlue">{props.label}</label>}
-            <select className="p-2 font-body outline-none">
+            <select className="p-2 font-body outline-none" value={props.value} onChange={(e) => props.onChange && props.onChange(e.target.value)}>
                 {props.options.map(item => (<option key={item.value} value={item.value}>{item.label}</option>))}
             </select>
         </div>

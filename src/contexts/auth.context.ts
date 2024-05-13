@@ -7,7 +7,7 @@ export interface AuthContextProps {
     accessToken: string | null;
     changeAccessToken: (token: string) => void;
     profile: User | null;
-    fetchProfile: () => void;
+    fetchProfile: (accessToken: string) => void;
     getProfile: () => Promise<User | null>;
 }
 

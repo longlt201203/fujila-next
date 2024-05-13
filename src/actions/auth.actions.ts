@@ -4,7 +4,6 @@ import { findUserByUsernameOrEmail } from "@/actions/user.actions";
 import { signJwtToken, verifyJwtToken } from "@/app/api/auth/utils";
 import Cache from "@/etc/cache";
 import { Role } from "@/etc/enums";
-import { User } from "@prisma/client";
 import { OAuth2Client } from "google-auth-library";
 
 export async function authenticated(token: string, roles?: Role[]) {

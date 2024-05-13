@@ -51,14 +51,14 @@ function Sidebar() {
 }
 
 export default function DashboardTemplate(props: PropsWithChildren) {
-    // const { getProfile, profile } = useAuth();
-    // const router = useRouter();
+    const { profile } = useAuth();
+    const router = useRouter();
 
-    // useEffect(() => {
-    //     if (!(profile && profile.role == Role.ADMIN)) {
-    //         router.push("/forbiden");
-    //     }
-    // }, []);
+    useEffect(() => {
+        if (!(profile && profile.role == Role.ADMIN)) {
+            router.push("/forbiden");
+        }
+    }, []);
 
     return (
         <div className="flex flex-row h-screen">

@@ -35,6 +35,14 @@ const ErrorCode = {
         code: "user_email_existed",
         message: "Email is existed"
     },
+    missing_chat_id: {
+        code: "missing_chat_id",
+        message: "Chat ID is missing"
+    },
+    chat_not_found: {
+        code: "chat_not_found",
+        message: "Chat not found!"
+    }
 }
 
 export default ErrorCode;

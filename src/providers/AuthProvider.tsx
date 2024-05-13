@@ -27,19 +27,17 @@ export default function AuthProvider(props: PropsWithChildren) {
         setAccessToken(token);
     }
 
-    const fetchProfile = () => {
-        if (accessToken) {
-            serverGetProfile(accessToken)
-                .then((profile) => {
-                    setProfile(profile);
-                });
-        } else {
-            setProfile(null);
-        }
+    const fetchProfile = (accessToken: string) => {
+        serverGetProfile(accessToken)
+            .then((profile) => {
+                setProfile(profile);
+            });
     }
 
     useEffect(() => {
-        fetchProfile();
+        if (accessToken) {
+            fetchProfile(accessToken);
+        }
     }, [accessToken]);
 
     useEffect(() => {

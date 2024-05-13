@@ -4,7 +4,7 @@ import { findChatById } from "@/actions/chat.actions";
 import { findUserByUsernameOrEmail } from "@/actions/user.actions";
 import Button from "@/components/Button";
 import Form from "@/components/Form";
-import { Table, TableBody, TableHead, TableHeadCell, TableRow } from "@/components/Table";
+import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "@/components/Table";
 import { Chat, ChatRound, User } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -69,7 +69,7 @@ export default function ChatHistoriesPage() {
                 {user ? (
                     <>
                         {user.chats.length > 0 ? (
-                            <Form.SelectInput label="Chat" options={user.chats.map((chat) => ({ label: chat.id, value: chat.id }))} />
+                            <Form.SelectInput label="Chat" options={user.chats.map((chat) => ({ label: chat.id, value: chat.id }))} value={currentChatId || ""} onChange={(v) => setCurrentChatId(v)} />
                         ) : (
                             <p className="font-body text-themeColors-midnightBlue text-center">User don't have any chat yet!</p>
                         )}
@@ -89,7 +89,16 @@ export default function ChatHistoriesPage() {
                                 <TableHeadCell>Create At</TableHeadCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody></TableBody>
+                        <TableBody>
+                            {chat.rounds.sort((a, b) => b.createdAt.getTime()-a.createdAt.getTime()).map((item, index) => (
+                                <TableRow key={item.id}>
+                                    <TableCell>{index+1}</TableCell>
+                                    <TableCell>{item.userText}</TableCell>
+                                    <TableCell>{item.botResponse}</TableCell>
+                                    <TableCell>{item.createdAt.toLocaleString()}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
                     </Table>
                 </div>
             )}
