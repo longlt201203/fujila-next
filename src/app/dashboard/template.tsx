@@ -1,65 +1,22 @@
-"use client"
-
-import { PropsWithChildren, useEffect } from "react";
-import Typography from "@/components/Typography";
-import { LinkButton } from "@/components/Button";
-import { usePathname, useRouter } from "next/navigation";
-import useAuth from "@/hooks/useAuth";
+import { PropsWithChildren } from "react";
+import Sidebar from "@/app/dashboard/components/Sidebar";
+import Header from "@/app/dashboard/components/Header";
+import { cookies } from "next/headers";
+import { getProfile } from "@/actions/auth.actions";
 import { Role } from "@/etc/enums";
+import { redirect } from "next/navigation";
 
-function Header() {
-    return (
-        <div className="p-2 bg-themeColors-crystalBlue">
-            <Typography.Display4xl className="text-4xl text-white text-center">Fujila</Typography.Display4xl>
-        </div>
-    );
-}
-
-const pathMapping = [
-    {
-        path: "/dashboard",
-        text: "Dashboard"
-    },
-    {
-        path: "/dashboard/users",
-        text: "Users"
-    },
-    {
-        path: "/dashboard/chat-histories",
-        text: "Chat Histories"
+export default async function DashboardTemplate(props: PropsWithChildren) {
+    const accessToken = cookies().get("accessToken");
+    if (accessToken) {
+        const profile = await getProfile(accessToken.value);
+        if (!(profile && profile.role == Role.ADMIN)) {
+            redirect("/forbiden");
+        }
+    } else {
+        redirect("/forbiden");
     }
-];
-
-function Sidebar() {
-    const pathname = usePathname();
-
-    return (
-        <div className="w-1/6 h-full bg-themeColors-royalBlue flex flex-col gap-y-5 py-5">
-            <div className="">
-                <Typography.SubDisplay className="text-white text-center">Users</Typography.SubDisplay>
-            </div>
-            <div className="flex flex-col px-3 gap-y-1 h-full">
-                {pathMapping.map((item, index) => (
-                    <LinkButton key={index} href={item.path} variant={item.path == pathname ? "crystalBlue" : "royalBlue"}>{item.text}</LinkButton>
-                ))}
-            </div>
-            <div className="flex flex-col px-3 gap-y-1">
-                <LinkButton variant="danger">Logout</LinkButton>
-            </div>
-        </div>
-    );
-}
-
-export default function DashboardTemplate(props: PropsWithChildren) {
-    // const { getProfile, profile } = useAuth();
-    // const router = useRouter();
-
-    // useEffect(() => {
-    //     if (!(profile && profile.role == Role.ADMIN)) {
-    //         router.push("/forbiden");
-    //     }
-    // }, []);
-
+    
     return (
         <div className="flex flex-row h-screen">
             <Sidebar />

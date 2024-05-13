@@ -4,13 +4,11 @@ import { loginWithGoogle } from "@/actions/auth.actions";
 import Button from "@/components/Button";
 import Form from "@/components/Form";
 import Typography from "@/components/Typography";
-import useAuth from "@/hooks/useAuth";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
-    const { changeAccessToken } = useAuth();
     const [loginError, setLoginError] = useState<string | null>(null);
     const router = useRouter();
 
@@ -19,9 +17,8 @@ export default function LoginPage() {
             setLoginError("Login Google error!");
         } else {
             loginWithGoogle(res.credential)
-                .then((accessToken) => {
-                    if (accessToken) {
-                        changeAccessToken(accessToken);
+                .then((success) => {
+                    if (success) {
                         setLoginError("");
                         router.push("/dashboard");
                     } else {

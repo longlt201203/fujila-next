@@ -1,7 +1,7 @@
 import { findUserByUsernameOrEmail } from "@/actions/user.actions";
 import { randomLoginCode } from "@/app/api/auth/utils";
 import Cache from "@/etc/cache";
-import { ErrorResponseDto, MessageResponseDto } from "@/etc/dto";
+import { ErrorResponseDto } from "@/etc/dto";
 import ErrorCode from "@/etc/error-code";
 import MailService from "@/etc/mail.service";
 import { NextRequest, NextResponse } from "next/server";
