@@ -1,7 +1,7 @@
-import { AnchorHTMLAttributes, ButtonHTMLAttributes, DetailedHTMLProps } from "react";
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, ChangeEventHandler, DetailedHTMLProps, LabelHTMLAttributes } from "react";
 
 const classMapping = {
-    base: "rounded-lg transition-all font-label text-center",
+    base: "block rounded-lg transition-all font-label text-center hover:cursor-pointer",
     // variants
     royalBlue: "border-themeColors-royalBlue bg-themeColors-royalBlue text-white hover:bg-white hover:text-themeColors-royalBlue",
     crystalBlue: "border-themeColors-crystalBlue bg-themeColors-crystalBlue text-white hover:bg-white hover:text-themeColors-crystalBlue",
@@ -28,4 +28,18 @@ export function LinkButton(props: DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnc
     return (
         <a {...props} className={`${classMapping.base} ${classMapping[props.size || "medium"]} ${classMapping[props.variant || "royalBlue"]}` + " " + props.className} />
     );
+}
+
+export interface UploadFileButtonProps {
+    inputId: string;
+    onFilesChange?: (files: FileList | null) => void
+}
+
+export function UploadFileButton(props: DetailedHTMLProps<LabelHTMLAttributes<HTMLLabelElement>, HTMLLabelElement> & ButtonProps & UploadFileButtonProps) { 
+    return (
+        <div>
+            <label {...props} className={`${classMapping.base} ${classMapping[props.size || "medium"]} ${classMapping[props.variant || "royalBlue"]}` + " " + props.className} htmlFor={props.inputId} />
+            <input type="file" id={props.inputId} className="hidden" onChange={(e) => props.onFilesChange && props.onFilesChange(e.target.files)} />
+        </div>
+    )
 }

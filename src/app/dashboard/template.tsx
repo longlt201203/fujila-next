@@ -14,7 +14,7 @@ export default async function DashboardTemplate(props: PropsWithChildren) {
             redirect("/forbiden");
         }
     } else {
-        redirect("/forbiden");
+        redirect("/login");
     }
     
     return (

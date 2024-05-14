@@ -7,6 +7,10 @@ import { usePathname } from "next/navigation";
 
 const pathMapping = [
     {
+        path: "/dashboard/chat-with-fujila",
+        text: "Chat With Fujila"
+    },
+    {
         path: "/dashboard",
         text: "Dashboard"
     },
