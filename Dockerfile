@@ -1,5 +1,5 @@
 # Step 1: Use an official Node.js runtime as a parent image
-FROM node:16-alpine
+FROM node:18-alpine
 
 # Step 2: Set the working directory
 WORKDIR /app
@@ -16,8 +16,11 @@ COPY . .
 # Step 6: Build the Next.js application
 RUN npm run build
 
-# Step 7: Expose the port Next.js will run on
+# Step 7: Migrate database
+RUN npm run migrate
+
+# Step 8: Expose the port Next.js will run on
 EXPOSE 3000
 
-# Step 8: Command to run the application
+# Step 9: Command to run the application
 CMD ["npm", "start"]
