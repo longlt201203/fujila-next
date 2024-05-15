@@ -32,14 +32,15 @@ export function LinkButton(props: DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnc
 
 export interface UploadFileButtonProps {
     inputId: string;
-    onFilesChange?: (files: FileList | null) => void
+    multiple?: boolean;
+    onFilesChange?: (files: FileList | null) => void;
 }
 
 export function UploadFileButton(props: DetailedHTMLProps<LabelHTMLAttributes<HTMLLabelElement>, HTMLLabelElement> & ButtonProps & UploadFileButtonProps) { 
     return (
         <div>
             <label {...props} className={`${classMapping.base} ${classMapping[props.size || "medium"]} ${classMapping[props.variant || "royalBlue"]}` + " " + props.className} htmlFor={props.inputId} />
-            <input type="file" id={props.inputId} className="hidden" onChange={(e) => props.onFilesChange && props.onFilesChange(e.target.files)} />
+            <input type="file" id={props.inputId} className="hidden" onChange={(e) => props.onFilesChange && props.onFilesChange(e.target.files)} multiple={props.multiple} />
         </div>
     )
 }

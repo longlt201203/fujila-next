@@ -1,15 +1,18 @@
 "use client"
 
 import Button, { UploadFileButton } from "@/components/Button";
-import { useCallback, useEffect, useState } from "react";
-import { Descendant, Element, Transforms, createEditor } from "slate";
+import { useCallback, useState } from "react";
+import { Descendant, Editor, Transforms, createEditor } from "slate";
 import { Editable, RenderElementProps, Slate, withReact } from "slate-react";
+import isUrl from "is-url";
+import imageExtensions from "image-extensions";
 
 function InputImage(props: RenderElementProps & { src: string }) {
     return (
         <div style={{ width: "150px", height: "150px" }}>
-            <img src={props.src} className="block h-full w-full object-cover object-center" />
-            <div className="hidden">{props.children}</div>
+            {props.children}
+            <img src={props.src} className="block h-full w-full object-cover object-center border-x-themeColors-silverBlue border-4 rounded-lg" />
+            {/* <div className="hidden">{props.children}</div> */}
         </div>
     )
 }
@@ -21,8 +24,50 @@ const initialValue: Descendant[] = [
     },
 ]
 
+function withImages(editor: Editor) {
+    const { insertData, isVoid } = editor;
+
+    editor.isVoid = (ele) => ele.type == "image" ? true : isVoid(ele);
+    editor.insertData = (data) => {
+        const text = data.getData("text/plain");
+        // const { files } = data;
+        // for (let i = 0; i < files.length; i++) {
+        //     const file = files.item(i);
+        //     if (file) {
+
+        //     }
+        // }
+        if (isImageUrl(text)) {
+            insertImage(editor, text);
+        } else {
+            const data = new DataTransfer()
+            data.setData("text/plain", text);
+            insertData(data);
+        }
+
+        
+    }
+
+    return editor;
+}
+
+function isImageUrl(url: string) {
+    if (!url) return false;
+    if (!isUrl(url)) return false;
+    const ext = new URL(url).pathname.split('.').pop();
+    return ext && imageExtensions.includes(ext);
+  }
+
+function insertImage(editor: Editor, src: string) {
+    Transforms.insertNodes(
+        editor, [
+            { type: "image", src: src, children: [{ text: "" }] },
+            { type: "paragraph", children: [{ text: "" }] }
+        ]);
+}
+
 export default function ChatInput() {
-    const [editor] = useState(() => withReact(createEditor()));
+    const [editor] = useState(() => withImages(withReact(createEditor())));
 
     const renderElement = useCallback((props: RenderElementProps) => {
         switch (props.element.type) {
@@ -39,11 +84,13 @@ export default function ChatInput() {
 
     const handleFileChange = (files: FileList | null) => {
         if (files) {
-            Transforms.insertNodes(
-                editor, [
-                    { type: "image", src: "https://th.bing.com/th/id/OIP.QsI8gYdDz3o1dfimmzB5NgHaLS?rs=1&pid=ImgDetMain", children: [{ text: "" }] },
-                    { type: "paragraph", children: [{ text: "" }] }
-                ]);
+            for (let i = 0; i < files.length; i++) {
+                const file = files.item(i);
+                if (file) {
+                    const url = URL.createObjectURL(file);
+                    insertImage(editor, url);
+                }
+            }
         }
     }
 
@@ -51,7 +98,7 @@ export default function ChatInput() {
         <Slate editor={editor} initialValue={initialValue} onValueChange={handleChange}>
             <div className="border rounded-lg flex flex-row items-center gap-x-1 p-1">
                 <Editable className="outline-none font-body w-full" renderElement={renderElement} />
-                <UploadFileButton inputId="goodjob" size="small" variant="crystalBlue" onFilesChange={handleFileChange}>Image</UploadFileButton>
+                <UploadFileButton inputId="goodjob" size="small" variant="crystalBlue" onFilesChange={handleFileChange} multiple>Image</UploadFileButton>
                 <Button size="small">Send</Button>
             </div>
         </Slate>
